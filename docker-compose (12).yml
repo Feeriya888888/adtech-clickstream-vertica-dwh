@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  vertica:
+    image: opentext/vertica-ce:latest
+    container_name: vertica_dwh
+    ports:
+      - "5433:5433"
+      - "5444:5444"
+    environment:
+      - VERTICA_DB_NAME=VMart
+      - VERTICA_DB_USER=dbadmin
+      - VERTICA_DB_PASSWORD=
+    volumes:
+      - vertica_data:/data
+    ulimits:
+      nproc: 65536
+      nofile:
+        soft: 65536
+        hard: 65536
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/vertica/bin/vsql -U dbadmin -d VMart -c 'SELECT 1;'"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+
+volumes:
+  vertica_data:
