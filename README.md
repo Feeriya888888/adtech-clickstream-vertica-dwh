@@ -1,0 +1,1 @@
+# adtech-clickstream-vertica-dwh
